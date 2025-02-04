@@ -4,15 +4,19 @@
 
     <head>
         <meta name="viewport" content="initial-scale=1, width=device-width">
-        <title>hello</title>
+        
+        <title>{%block title%}{%endblock%}</title>
     </head>
-    Šī ir nemainīgā daļa.
-    <a href="/">Galvenā lapa</a>
-    <a href="/about">Uz "par" lapu</a>
+    
     <br>
 
 
     <body>
+        <div style = "width:100%; padding: 5pt; background-color: rgb(219, 206, 190);">lorem ipsum</div>
+        <div style = "width:100%; padding: 3pt; background-color: rgb(175, 165, 152);">
+            <a href="/">Sākums</a>
+            <a href="/about">Par mums</a>
+        </div>
         {% block body %}{% endblock %}
     </body>
 
