@@ -4,10 +4,12 @@ app = Flask(__name__)
 
 vakances=[{
     "title" : "1",
-    "text" : "2"
+    "text" : "2",
+    "link":"https://www.w3schools.com"
     },{
     "title":"3",
-    "text":"4"
+    "text":"4",
+    "link":"https://www.w3schools.com"
     }]
 @app.route("/")
 def index():
