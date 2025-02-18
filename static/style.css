@@ -1,12 +1,43 @@
 body {
-    background-color: lightblue;
+    background-color: #FFF5EE;
 }
-  
+div.top1 {
+    width:100%; 
+    padding: 0.5em; 
+    background-color: rgb(219, 206, 190);
+    margin-top: 1.5em;
+}
+div.top2 {
+    width:100%; 
+    padding: 0.3em; 
+    background-color: rgb(175, 165, 152);
+}
+div.about {
+    margin: 1.5em;
+}
+div.row {
+    margin: 1em;
+}
 h1 {
     color: navy;
-    margin-left: 20px;
+    margin-left: 1em;
+}
+h2 {
+    color: rgb(8, 100, 160);
+    margin-left: 1.25em;
+}
+h3 {
+    color: rgb(8, 100, 160);
+    margin-left: 1.5em;
+}
+h5 {
+    color: rgb(8, 100, 160);
+    margin-left: 1em;
 }
 p {
-    color: red;
-    margin-left: 20px;
+    color: rgb(3, 5, 100);
+    margin-left: 2em;
+}
+a {
+    margin-left: 2.2em;
 }
