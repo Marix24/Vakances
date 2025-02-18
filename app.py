@@ -12,15 +12,24 @@ for i in range (len(results)):
     title=results["records"][i]["Vakances nosaukums"]
     link=results["records"][i]["Vakances paplašināts apraksts"]
     text=results["records"][i]["Vakances kategorija"]
+    payfrom=results["records"][i]["Alga no"]
+    payto=results["records"][i]["Alga līdz"]
     newelement={
             "title":title,
             "link":link,
             "text": text,
+            "payfrom":payfrom,
+            "payto":payto
         }
     vakances.append(newelement)
-@app.route("/")
+@app.route("/",methods=["GET"])
 def index():
     return render_template("index.html", vakances=vakances)
+@app.route("/",methods=["POST"])
+def dofilters():
+    print("TODO")
+    return render_template("index.html",vakances=vakances)
+
 
 @app.route("/about")
 def about():
