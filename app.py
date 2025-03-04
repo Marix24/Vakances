@@ -1,8 +1,10 @@
 from flask import Flask, render_template, request
 import requests
+import time
 app = Flask(__name__)
 import requests
 reqjson={}
+fileavailable=True
 vakances=[]
 text=requests.get(url="https://data.gov.lv/dati/lv/api/3/action/datastore_search?resource_id=7f68f6fc-a0f9-4c31-b43c-770e97a06fda", data=reqjson)
 text=text.json()
@@ -24,10 +26,33 @@ for i in range (len(results)):
     vakances.append(newelement)
 @app.route("/",methods=["GET"])
 def index():
+    if(fileavailable):
+        fileavailable=False
+        file=open("laiki.txt","r+")
+        timewr=file.read()
+        
+        timewr=int(time)
+        if(time.time()-timewr>86400):
+            file.close()
+            "TO DO"
+            file=open("laiki.txt","w+")
+            file.write(time.time())
+        file.close()
+        fileavailable=True
+        
     return render_template("index.html", vakances=vakances)
 @app.route("/",methods=["POST"])
 def dofilters():
     print("TODO")
+    algano=request.args["Alga no"]
+    algalidz=request.args["Alga lidz"]
+    Vakancesnosaukums=request.args["Vakances nosaukums"]
+    Vakanceskategorija=request.args["Vakances kategorija"]
+    sql_get_data_byfilters = f"""
+    SELECT * FROM punkti WHERE vakance LIKE {Vakancesnosaukums} AND kategorija LIKE {Vakanceskategorija} AND algano LIKE {algano} AND algalidz LIKE {algalidz};
+"""
+    cursor="todo"
+    cursor.execute(sql_get_data_byfilters)
     return render_template("index.html",vakances=vakances)
 
 
