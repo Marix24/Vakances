@@ -26,17 +26,18 @@ for i in range (len(results)):
     vakances.append(newelement)
 @app.route("/",methods=["GET"])
 def index():
-    if(fileavailable):
+    global fileavailable
+    if fileavailable==True:
         fileavailable=False
         file=open("laiki.txt","r+")
         timewr=file.read()
-        
-        timewr=int(time)
+        print(timewr)
+        timewr=int(timewr)
         if(time.time()-timewr>86400):
             file.close()
             "TO DO"
             file=open("laiki.txt","w+")
-            file.write(time.time())
+            file.write(str(time.time()))
         file.close()
         fileavailable=True
         
