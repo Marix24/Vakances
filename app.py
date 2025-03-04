@@ -32,7 +32,7 @@ def index():
         file=open("laiki.txt","r+")
         timewr=file.read()
         print(timewr)
-        timewr=int(timewr)
+        timewr=float(timewr)
         if(time.time()-timewr>86400):
             file.close()
             "TO DO"
