@@ -45,6 +45,9 @@ for i in range (len(results)):
     vakances.append(newelement)
 @app.route("/",methods=["GET"])
 def index():
+    print("getdata")
+    vakances=get_data("*")
+    print(vakances)
     global fileavailable
     if fileavailable==True:
         fileavailable=False
@@ -61,6 +64,7 @@ def index():
         fileavailable=True
         
     return render_template("index.html", vakances=vakances)
+'''
 @app.route("/",methods=["POST"])
 def dofilters():
     print("TODO")
@@ -71,13 +75,12 @@ def dofilters():
     sql_get_data_byfilters = f"""
     SELECT * FROM punkti WHERE vakance LIKE {Vakancesnosaukums} AND kategorija LIKE {Vakanceskategorija} AND algano LIKE {algano} AND algalidz LIKE {algalidz};
 """
+'''
 sql_store = """
     INSERT INTO vakances (vakancesnr, aktdatums, regnr, nosaukums, kategorija, algano, algalidz, slodze, darbalaiks, termins, attels, vieta, apraksts)
     VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?);
 """
-sql_get_data = """
-    SELECT * FROM vakances;
-"""
+
 conn = None
 cursor = None
 def open_db():
@@ -106,6 +109,9 @@ def fetch_and_store_data():
         #print( (row['NMPP_KODS'], row['NMPP_NOSAUKUMS'], row['NMPP_ADRESE']) )
         cursor.execute(sql_store , (row["Vakances Nr"], row["Aktualizācijas datums"], row["Iestādes reģistrācijas numurs"], row["Vakances nosaukums"], row["Vakances kategorija"], row["Alga no"], row["Alga līdz"], row["Slodzes tips"], row["Darba laika veids"], row["Pieteikšanās termiņš"], row["Attēls"], row["Vieta"], row["Vakances paplašināts apraksts"]))
 def get_data( filter ):
+    sql_get_data = f"""
+    SELECT {filter} FROM vakances;
+"""
     open_db()
     create_db()
     #create_tables()
@@ -116,14 +122,6 @@ def get_data( filter ):
 
     close_db()
     return rows
-
-    
-
-app = Flask(__name__)
-@app.route("/")
-def index():
-    return render_template("index.html")
-
 @app.route("/about")
 def about():
     return render_template("about.html")
