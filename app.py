@@ -69,15 +69,19 @@ def index():
             fileavailable=True
     if request.method=="POST":
         print("TODO")
-        algano=request.args["Alga no"]
+        vakances=get_data("")
+        return render_template("index2.html", vakances=vakances)
+        algano=request.args["A1"]
+        """
         algalidz=request.args["Alga līdz"]
         Vakancesnosaukums=request.args["Vakances nosaukums"]
         Vakanceskategorija=request.args["Vakances kategorija"]
         filter=f"WHERE nosaukums LIKE {Vakancesnosaukums} AND kategorija LIKE {Vakanceskategorija} AND algano>{algano} AND algalidz>{algalidz}" 
         vakances=get_data(filter)
+        """
         print(vakances)
         
-    return render_template("index.html", vakances=vakances)
+    return render_template("index2.html", vakances=vakances)
 
 sql_store = """
     INSERT INTO vakances (vakancesnr, aktdatums, regnr, nosaukums, kategorija, algano, algalidz, slodze, darbalaiks, termins, attels, vieta, apraksts)
