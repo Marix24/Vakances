@@ -28,6 +28,7 @@ vakances=[]
 text=requests.get(url="https://data.gov.lv/dati/lv/api/3/action/datastore_search?resource_id=7f68f6fc-a0f9-4c31-b43c-770e97a06fda", data=reqjson)
 text=text.json()
 results=text["result"]
+'''
 for i in range (len(results)):
 
     title=results["records"][i]["Vakances nosaukums"]
@@ -43,39 +44,41 @@ for i in range (len(results)):
             "payto":payto
         }
     vakances.append(newelement)
-@app.route("/",methods=["GET"])
+'''
+@app.route("/", methods=["POST","GET"])
 def index():
-    print("getdata")
-    vakances=get_data("*")
-    print(vakances)
-    global fileavailable
-    if fileavailable==True:
-        fileavailable=False
-        file=open("laiki.txt","r+")
-        timewr=file.read()
-        print(timewr)
-        timewr=float(timewr)
-        if(time.time()-timewr>86400):
+    print("execute")
+    if request.method=="GET":
+        print("getdata")
+        vakances=get_data("")
+        print(vakances)
+        global fileavailable
+        if fileavailable==True:
+            fileavailable=False
+            file=open("laiki.txt","r+")
+            timewr=file.read()
+            print(timewr)
+            timewr=float(timewr)
+            if(time.time()-timewr>86400):
+                file.close()
+                "TO DO"
+                file=open("laiki.txt","w+")
+                fetch_and_store_data()
+                file.write(str(time.time()))
             file.close()
-            "TO DO"
-            file=open("laiki.txt","w+")
-            file.write(str(time.time()))
-        file.close()
-        fileavailable=True
+            fileavailable=True
+    if request.method=="POST":
+        print("TODO")
+        algano=request.args["Alga no"]
+        algalidz=request.args["Alga līdz"]
+        Vakancesnosaukums=request.args["Vakances nosaukums"]
+        Vakanceskategorija=request.args["Vakances kategorija"]
+        filter=f"WHERE nosaukums LIKE {Vakancesnosaukums} AND kategorija LIKE {Vakanceskategorija} AND algano>{algano} AND algalidz>{algalidz}" 
+        vakances=get_data(filter)
+        print(vakances)
         
     return render_template("index.html", vakances=vakances)
-'''
-@app.route("/",methods=["POST"])
-def dofilters():
-    print("TODO")
-    algano=request.args["Alga no"]
-    algalidz=request.args["Alga lidz"]
-    Vakancesnosaukums=request.args["Vakances nosaukums"]
-    Vakanceskategorija=request.args["Vakances kategorija"]
-    sql_get_data_byfilters = f"""
-    SELECT * FROM punkti WHERE vakance LIKE {Vakancesnosaukums} AND kategorija LIKE {Vakanceskategorija} AND algano LIKE {algano} AND algalidz LIKE {algalidz};
-"""
-'''
+
 sql_store = """
     INSERT INTO vakances (vakancesnr, aktdatums, regnr, nosaukums, kategorija, algano, algalidz, slodze, darbalaiks, termins, attels, vieta, apraksts)
     VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?);
@@ -110,7 +113,7 @@ def fetch_and_store_data():
         cursor.execute(sql_store , (row["Vakances Nr"], row["Aktualizācijas datums"], row["Iestādes reģistrācijas numurs"], row["Vakances nosaukums"], row["Vakances kategorija"], row["Alga no"], row["Alga līdz"], row["Slodzes tips"], row["Darba laika veids"], row["Pieteikšanās termiņš"], row["Attēls"], row["Vieta"], row["Vakances paplašināts apraksts"]))
 def get_data( filter ):
     sql_get_data = f"""
-    SELECT {filter} FROM vakances;
+    SELECT * FROM vakances {filter};
 """
     open_db()
     create_db()
