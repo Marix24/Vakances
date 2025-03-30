@@ -6,18 +6,18 @@
 <form action="/" method="post">
   <div class="row g-5">
     <div class="col">
-      <input type="text" class="form-control" name="Vakances-nosaukums" placeholder="Vakances Nosaukums" aria-label="Vakances nosaukums">
+      <input type="text" class="form-control" name="A3" placeholder="Vakances Nosaukums" aria-label="Vakances nosaukums">
     </div>
     <div class="col">
-      <input type="text" class="form-control" name="Vakances-kategorija" placeholder="Vakances kategorija" aria-label="Vakances kategorija">
+      <input type="text" class="form-control" name="A4" placeholder="Vakances kategorija" aria-label="Vakances kategorija">
     </div>
     <div class="col">
-      <input type="text" class="form-control" name="Alga-no" placeholder="Alga no" aria-label="Alga no">
+      <input type="text" class="form-control" name="A1" placeholder="Alga no" aria-label="Alga no">
 
 
     </div>
     <div class="col">
-      <input type="text" class="form-control" name="Alga-lidz" placeholder="Alga līdz" aria-label="Alga līdz">
+      <input type="text" class="form-control" name="A2" placeholder="Alga līdz" aria-label="Alga līdz">
     </div>
     <div class="col">
       <button type="submit" class="btn btn-primary">Meklēt</button>
@@ -35,7 +35,7 @@
           <h5 class="card-title">{{vakance[3]}}</h5>
           <p class="card-text">{{vakance[4]}}</p>
           <p class="card-text">{{vakance[5]}}-{{vakance[6]}} eur</p>
-          <a href={{vakance["link"]}} class="card-text">links</a>
+          <a href={{vakance[12]}} class="card-text">links</a>
         </div>
       </div>
     </div>

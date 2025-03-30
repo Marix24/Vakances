@@ -73,20 +73,33 @@ def index():
     if request.method=="POST":
         print("TODO")
         vakances=get_data("")
-        return render_template("index2.html", vakances=vakances)
-        algano=request.args["A1"]
-        """
-        algalidz=request.args["Alga līdz"]
-        Vakancesnosaukums=request.args["Vakances nosaukums"]
-        Vakanceskategorija=request.args["Vakances kategorija"]
-        
-        filter=f"WHERE nosaukums LIKE {Vakancesnosaukums} AND kategorija LIKE {Vakanceskategorija} AND algano>{algano} AND algalidz>{algalidz}" 
-        vakances=get_data(filter)
-        """
-        
+        filter1=""
+        print(3)
+        algano=request.form.get("A1")
+        print(4)
+        algalidz=request.form.get("A2")
+        print(5)
+        Vakancesnosaukums=request.form.get("A3")
+        print(6)
+        Vakanceskategorija=request.form.get("A4")
+        print(2)
+        try:
+            if int(algano)<0:
+                algano=0
+        except:
+            print("err")
+            algano=0
+        try:
+            if int(algalidz)<0:
+                algalidz=100000
+        except:
+            algalidz=100000
+        filter1=f'WHERE (nosaukums LIKE "{Vakancesnosaukums}%" AND kategorija LIKE "{Vakanceskategorija}%") AND (algano>={algano} AND algalidz<={algalidz})'
+        vakances=get_data(filter1)
+        print(1)
         print(vakances)
         
-    return render_template("index2.html", vakances=vakances)
+    return render_template("index.html", vakances=vakances)
 
 sql_store = """
     INSERT INTO vakances (vakancesnr, aktdatums, regnr, nosaukums, kategorija, algano, algalidz, slodze, darbalaiks, termins, attels, vieta, apraksts)
@@ -120,19 +133,19 @@ def fetch_and_store_data():
     for row in rows:
         #print( (row['NMPP_KODS'], row['NMPP_NOSAUKUMS'], row['NMPP_ADRESE']) )
         cursor.execute(sql_store , (row["Vakances Nr"], row["Aktualizācijas datums"], row["Iestādes reģistrācijas numurs"], row["Vakances nosaukums"], row["Vakances kategorija"], row["Alga no"], row["Alga līdz"], row["Slodzes tips"], row["Darba laika veids"], row["Pieteikšanās termiņš"], row["Attēls"], row["Vieta"], row["Vakances paplašināts apraksts"]))
-def get_data( filter ):
+def get_data( filter1 ):
     sql_get_data = f"""
-    SELECT * FROM vakances {filter};
+    SELECT * FROM vakances {filter1};
 """
     open_db()
     create_db()
     #create_tables()
     fetch_and_store_data() #saglabā jaunāko datu versiju no API uz db
-
+    print(sql_get_data)
     cursor.execute( sql_get_data )
     rows = cursor.fetchall()
 
-    #close_db() dont close db otherwise we cant make any new requests->cursor=none error
+    close_db()
     return rows
 @app.route("/about")
 def about():
