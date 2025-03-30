@@ -51,14 +51,17 @@ def index():
     if request.method=="GET":
         print("getdata")
         vakances=get_data("")
-        print(vakances)
+        #print(vakances)
         global fileavailable
         if fileavailable==True:
             fileavailable=False
             file=open("laiki.txt","r+")
             timewr=file.read()
             print(timewr)
-            timewr=float(timewr)
+            try:
+                timewr=float(timewr)
+            except:
+                timewr=0 #write corrupted time to the valid one
             if(time.time()-timewr>86400):
                 file.close()
                 "TO DO"
@@ -76,9 +79,11 @@ def index():
         algalidz=request.args["Alga līdz"]
         Vakancesnosaukums=request.args["Vakances nosaukums"]
         Vakanceskategorija=request.args["Vakances kategorija"]
+        
         filter=f"WHERE nosaukums LIKE {Vakancesnosaukums} AND kategorija LIKE {Vakanceskategorija} AND algano>{algano} AND algalidz>{algalidz}" 
         vakances=get_data(filter)
         """
+        
         print(vakances)
         
     return render_template("index2.html", vakances=vakances)
@@ -127,7 +132,7 @@ def get_data( filter ):
     cursor.execute( sql_get_data )
     rows = cursor.fetchall()
 
-    close_db()
+    #close_db() dont close db otherwise we cant make any new requests->cursor=none error
     return rows
 @app.route("/about")
 def about():
