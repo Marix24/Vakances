@@ -124,15 +124,16 @@ def create_db():
     cursor.execute(sql_create)
 
 def fetch_and_store_data():
+    open_db()
     response = requests.get("https://data.gov.lv/dati/lv/api/3/action/datastore_search?resource_id=7f68f6fc-a0f9-4c31-b43c-770e97a06fda")
     data = response.json()
     #print( data )
     rows = data["result"]["records"]
     cursor.execute("DELETE FROM vakances")
-
     for row in rows:
         #print( (row['NMPP_KODS'], row['NMPP_NOSAUKUMS'], row['NMPP_ADRESE']) )
         cursor.execute(sql_store , (row["Vakances Nr"], row["Aktualizācijas datums"], row["Iestādes reģistrācijas numurs"], row["Vakances nosaukums"], row["Vakances kategorija"], row["Alga no"], row["Alga līdz"], row["Slodzes tips"], row["Darba laika veids"], row["Pieteikšanās termiņš"], row["Attēls"], row["Vieta"], row["Vakances paplašināts apraksts"]))
+    close_db()
 def get_data( filter1 ):
     sql_get_data = f"""
     SELECT * FROM vakances {filter1};
@@ -141,6 +142,7 @@ def get_data( filter1 ):
     create_db()
     #create_tables()
     fetch_and_store_data() #saglabā jaunāko datu versiju no API uz db
+    open_db()
     print(sql_get_data)
     cursor.execute( sql_get_data )
     rows = cursor.fetchall()
